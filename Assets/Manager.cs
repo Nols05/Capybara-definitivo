@@ -5,59 +5,71 @@ using UnityEngine.UI;
 
 public class Manager : MonoBehaviour {
 
-    public static Manager Singleton;
-
-    public float EscalaDeTiempo = 1;
-
-    public int TasaDeHambre = 10;
-
+     // Creamos las variables:
     public int Felicidad = 100;
     public int Hambre = 100;
     public int Sueno = 100;
 
-    public Mascota MascotaActual;  
-
-    public Mascota[] EstadoDeMascotas;
-    //0- normal, 1-gordo
-
-    public Slider SLDHambre;
-    public Slider SLDFelicidad;
-    public Slider SLDSueno;
-
-    void Awake(){
-        if(Singleton == null)
-        {
-            Singleton = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
-    }
-    
+    public Image UIImagen; 
+   
     // Start is called before the first frame update
     void Start()
     {
-       MascotaActual = Instantiate(EstadoDeMascotas[0], Vector3.zero, Quaternion.identity) as Mascota;
-       InvokeRepeating("ActualizarCosas", 0, EscalaDeTiempo);
+       StartCoroutine(hambre(3.0f)); //el tiempo  será cada cuantos segundos le baja el parámetrol
+       StartCoroutine(felicidad(5.0f));
+       StartCoroutine(sueno(10.0f));
+        
+    }
+    
+    void Update()
+    {
+        if(Felicidad > 50)
+            UIImagen.sprite = Resources.Load<Sprite>("Assets/Sprites/feliz");
+        else 
+            UiImagen
+            
+        
+
         
     }
 
-    int TiempoTranscurrido;
-    int TiempoHambre;
+ //Subrutinas de Hambre, Sueno y Felicidad
 
-    void ActualizarCosas()
+    private IEnumerator hambre(float waitTime)
     {
-        if(TiempoHambre > TasaDeHambre)
+        while (true)
         {
-            TiempoHambre=0;
-            Hambre--;
-            SLDHambre.value = Hambre;
-        }
+            yield return new WaitForSeconds(waitTime);
+            print("WaitAndPrint " + Time.time);
 
-        TiempoHambre++;
-        TiempoTranscurrido++;
+           Hambre --;
+        }
     }
+
+    private IEnumerator felicidad(float waitTime)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(waitTime);
+            print("WaitAndPrint " + Time.time);
+
+           Felicidad --;
+        }
+    }
+
+    private IEnumerator sueno(float waitTime)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(waitTime);
+            print("WaitAndPrint " + Time.time);
+
+           Sueno --;
+        }
+    }
+
+    
+
 
     
 }
